@@ -60,4 +60,4 @@ jobs:
             docker pull wolfiee42/github-action-fs-2:main
             docker stop app || true
             docker rm app || true
-            docker run -d --name app -p 8002:8002 wolfiee42/github-action-fs-2:main
+            docker run -d --name app -p 8002:2050 wolfiee42/github-action-fs-2:main
