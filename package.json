@@ -11,7 +11,7 @@
   "keywords": [],
   "main": "src/index.ts",
   "scripts": {
-    "start": "node -r dotenv/config dist/src/index.js",
+    "start": "node -r dotenv/config dist/index.js",
     "dev": "tsx watch --env-file=.env src/index.ts",
     "build": "tsc",
     "lint": "eslint --fix src test",
