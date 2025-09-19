@@ -16,8 +16,8 @@ app.use(cors());
 app.use(express.json());
 
 app.get<object, MessageResponse>("/", (req, res) => {
-  res.json({
-    message: "🦄🌈✨👋🌎🌏✨🌈🦄",
+  res.status(200).json({
+    message: "🦄🌈✨👋🌎🌏✨🌈🦄🦄🌈✨👋🌎🌏✨🌈🦄",
   });
 });
 
