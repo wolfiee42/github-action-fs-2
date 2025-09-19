@@ -55,6 +55,7 @@ jobs:
           host: ${{ secrets.PROD_HOST }}
           username: ${{ secrets.PROD_USER }}
           key: ${{ secrets.PROD_SSH_KEY }}
+          port: 1024
           script: |
             docker pull wolfiee42/github-action-fs-2:main
             docker stop app || true
