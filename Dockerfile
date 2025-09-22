@@ -1,18 +1,24 @@
-FROM node:18-alpine
+FROM node:20-alpine
+
+# Install pnpm
+RUN npm install -g pnpm@9
 
 WORKDIR /app
 
-COPY package*.json pnpm-lock.yaml ./
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
-
+# Install dependencies
 RUN pnpm install --frozen-lockfile
 
+# Copy source code
 COPY . .
 
-RUN pnpm build
+# Build the application
+RUN pnpm run build
 
+# Expose port
 EXPOSE 8001
 
+# Start the application
 CMD ["pnpm", "start"]
-
