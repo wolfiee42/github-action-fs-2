@@ -19,7 +19,7 @@ app.get<object, MessageResponse>("/", (req, res) => {
   console.log("Ping pong!!");
   
   res.status(200).json({
-    message: "🦄🌈✨👋🌎🌏✨🌈🦄🦄🌈✨👋🌎🌏✨🌈🦄",
+    message: "🦄🌈✨👋🌎🌏✨🌈🦄",
   });
 });
 

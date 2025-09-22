@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  api:
+    # Use external image if provided, otherwise build locally
+    image: ${DOCKER_IMAGE:-}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ${CONTAINER_NAME:-express-api-starter}
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=8001
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

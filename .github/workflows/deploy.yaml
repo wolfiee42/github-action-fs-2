@@ -57,7 +57,23 @@ jobs:
           key: ${{ secrets.PROD_SSH_KEY }}
           port: 1024
           script: |
+            # Clone/update repository to get docker-compose.yml
+            if [ -d "github-action-fs-2" ]; then
+              cd github-action-fs-2
+              git pull origin main
+            else
+              git clone https://github.com/wolfiee42/github-action-fs-2.git
+              cd github-action-fs-2
+            fi
+            
+            # Pull the latest image
             docker pull wolfiee42/github-action-fs-2:main
-            docker stop app || true
-            docker rm app || true
-            docker run -d --name app -p 8001:8001 wolfiee42/github-action-fs-2:main
+            
+            # Stop existing services
+            docker-compose down || true
+            
+            # Override for production: use the built image instead of building
+            DOCKER_IMAGE=wolfiee42/github-action-fs-2:main NODE_ENV=production CONTAINER_NAME=express-api-starter-prod docker-compose -f docker-compose.yml up -d
+            
+            # Clean up unused images
+            docker image prune -f
