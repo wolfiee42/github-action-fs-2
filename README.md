@@ -55,3 +55,37 @@ pnpm run test
 ```
 pnpm run dev
 ```
+
+## Production Deployment with PM2
+
+This application is configured for server deployment using PM2 process manager.
+
+### Server Setup
+
+1. Run the setup script on your server:
+```bash
+chmod +x deploy-setup.sh
+./deploy-setup.sh
+```
+
+2. Update the `ecosystem.config.js` file with your server details:
+   - Replace `your-server-ip` with your actual server IP
+   - Update the repository URL
+   - Adjust paths as needed
+
+### Manual Deployment
+
+1. Install dependencies and build:
+```bash
+pnpm install --frozen-lockfile
+pnpm run build
+```
+
+2. Start the application with PM2:
+```bash
+# Production mode
+pnpm run pm2:start
+
+# Development mode
+pnpm run pm2:dev
+```

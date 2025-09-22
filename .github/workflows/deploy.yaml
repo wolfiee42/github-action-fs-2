@@ -1,4 +1,4 @@
-name: Deploy to Docker Hub
+name: Deploy to Server
 
 on:
   push:
@@ -31,34 +31,20 @@ jobs:
       - name: Run typecheck
         run: pnpm typecheck
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build Application
+        run: pnpm run build
 
-      - name: Extract Meta Information
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: wolfiee42/github-action-fs-2
-
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          
       - name: Deploy to Production
         uses: appleboy/ssh-action@v1.0.1
         with:
           host: ${{ secrets.PROD_HOST }}
           username: ${{ secrets.PROD_USER }}
           key: ${{ secrets.PROD_SSH_KEY }}
-          port: 1024
+          port: ${{ secrets.PROD_PORT || 22 }}
           script: |
-            docker pull wolfiee42/github-action-fs-2:main
-            docker stop github-action-fs-2 || true
-            docker rm github-action-fs-2 || true
-            docker run -d --name github-action-fs-2 -p 8001:8001 -e NODE_ENV=production -e PORT=8001 --restart unless-stopped wolfiee42/github-action-fs-2:main
+            cd /var/www/github-action-fs-2
+            git pull origin main
+            pnpm install --frozen-lockfile
+            pnpm run build
+            pm2 reload ecosystem.config.js --env production
+            pm2 save
