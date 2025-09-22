@@ -1,7 +1,7 @@
 import app from "./app.js";
 import { env } from "./env.js";
 
-const port = env.PORT || 2050;
+const port = env.PORT || 8001;
 const server = app.listen(port, "0.0.0.0");
 
 server.on("error", (err) => {
